@@ -1,4 +1,5 @@
 import accountabilityRules from "./accountability/index.js";
+import biomeRules from "./biome/index.js";
 import noError from "./no-error.js";
 import noExplicitFunctionReturnType from "./no-explicit-function-return-type.js";
 import noFor from "./no-for.js";
@@ -17,6 +18,7 @@ import noUndefined from "./no-undefined.js";
 
 const rules = {
   ...accountabilityRules,
+  ...biomeRules,
   "no-error": noError,
   "no-explicit-function-return-type": noExplicitFunctionReturnType,
   "no-for": noFor,

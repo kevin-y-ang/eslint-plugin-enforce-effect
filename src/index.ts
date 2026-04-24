@@ -1,6 +1,12 @@
 import fs from "node:fs";
 
 import accountabilityRules from "./rules/accountability/index.js";
+import {
+  biomeCoreRuleNames,
+  biomeFullRuleNames,
+  biomeTsTypeRuleNames,
+  biomeWebRuleNames,
+} from "./rules/biome/index.js";
 import rules from "./rules/index.js";
 
 const pkg = JSON.parse(
@@ -11,6 +17,27 @@ const pkg = JSON.parse(
 };
 
 const namespace = "enforce-effect";
+
+function configFromRuleNames(
+  configName: string,
+  ruleNames: readonly string[],
+  warnRuleNames: readonly string[] = [],
+) {
+  return [
+    {
+      name: configName,
+      plugins: {
+        [namespace]: plugin,
+      },
+      rules: Object.fromEntries(
+        ruleNames.map((ruleName) => [
+          `${namespace}/${ruleName}`,
+          warnRuleNames.includes(ruleName) ? "warn" : "error",
+        ]),
+      ),
+    },
+  ];
+}
 
 const plugin = {
   meta: {
@@ -74,11 +101,41 @@ const accountability = [
   },
 ];
 
+const biomeCore = configFromRuleNames(
+  "enforce-effect/biome-core",
+  biomeCoreRuleNames,
+  ["warn-effect-sync-wrapper"],
+);
+
+const biomeWeb = configFromRuleNames("enforce-effect/biome-web", biomeWebRuleNames);
+const biomeTsType = configFromRuleNames(
+  "enforce-effect/biome-ts-type",
+  biomeTsTypeRuleNames,
+);
+const biomeFull = configFromRuleNames(
+  "enforce-effect/biome-full",
+  biomeFullRuleNames,
+  ["warn-effect-sync-wrapper"],
+);
+
 plugin.configs = {
   accountability,
+  "biome-core": biomeCore,
+  "biome-full": biomeFull,
+  "biome-ts-type": biomeTsType,
+  "biome-web": biomeWeb,
   recommended,
   recommendedTypeChecked,
 };
 
 export default plugin;
-export { accountability, recommended, recommendedTypeChecked, rules };
+export {
+  accountability,
+  biomeCore,
+  biomeFull,
+  biomeTsType,
+  biomeWeb,
+  recommended,
+  recommendedTypeChecked,
+  rules,
+};
