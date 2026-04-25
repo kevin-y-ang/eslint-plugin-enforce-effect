@@ -2,7 +2,7 @@ import parser from "@typescript-eslint/parser";
 import { RuleTester } from "@typescript-eslint/rule-tester";
 import { afterAll, describe, it } from "vitest";
 
-import rule from "../../src/rules/no-promise.js";
+import rule from "../../src/rules/ban-vanilla/no-promise.js";
 
 RuleTester.afterAll = afterAll;
 RuleTester.describe = describe;
@@ -50,11 +50,11 @@ ruleTester.run("no-promise", rule, {
     },
     {
       code: "loadConfig().then(handle);",
-      errors: [{ messageId: "noPromiseChain" }],
+      errors: [{ messageId: "noPromiseChainThen" }],
     },
     {
       code: "loadConfig()['catch'](handleError);",
-      errors: [{ messageId: "noPromiseChain" }],
+      errors: [{ messageId: "noPromiseChainCatch" }],
     },
     {
       code: "async function loadConfig() { return value; }",

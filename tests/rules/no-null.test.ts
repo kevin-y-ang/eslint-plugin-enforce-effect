@@ -2,7 +2,7 @@ import parser from "@typescript-eslint/parser";
 import { RuleTester } from "@typescript-eslint/rule-tester";
 import { afterAll, describe, it } from "vitest";
 
-import rule from "../../src/rules/no-null.js";
+import rule from "../../src/rules/ban-vanilla/no-null.js";
 
 RuleTester.afterAll = afterAll;
 RuleTester.describe = describe;

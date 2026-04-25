@@ -1,5 +1,3 @@
-import importExtensions from "./import-extensions.js";
-import noDirectFetch from "./no-direct-fetch.js";
 import noDisableValidation from "./no-disable-validation.js";
 import noEffectAsVoid from "./no-effect-asvoid.js";
 import noEffectCatchAllCause from "./no-effect-catchallcause.js";
@@ -10,13 +8,11 @@ import noNestedLayerProvide from "./no-nested-layer-provide.js";
 import noServiceOption from "./no-service-option.js";
 import noSilentErrorSwallow from "./no-silent-error-swallow.js";
 import noSqlTypeParameter from "./no-sql-type-parameter.js";
-import noVoidExpression from "./no-void-expression.js";
 import pipeMaxArguments from "./pipe-max-arguments.js";
 import preferOptionFromNullable from "./prefer-option-from-nullable.js";
+import noVoidExpression from "./no-void-expression.js";
 
 const accountabilityRules = {
-  "import-extensions": importExtensions,
-  "no-direct-fetch": noDirectFetch,
   "no-disable-validation": noDisableValidation,
   "no-effect-asvoid": noEffectAsVoid,
   "no-effect-catchallcause": noEffectCatchAllCause,
@@ -27,9 +23,9 @@ const accountabilityRules = {
   "no-service-option": noServiceOption,
   "no-silent-error-swallow": noSilentErrorSwallow,
   "no-sql-type-parameter": noSqlTypeParameter,
-  "no-void-expression": noVoidExpression,
   "pipe-max-arguments": pipeMaxArguments,
   "prefer-option-from-nullable": preferOptionFromNullable,
+  "no-void-expression": noVoidExpression,
 };
 
 export default accountabilityRules;

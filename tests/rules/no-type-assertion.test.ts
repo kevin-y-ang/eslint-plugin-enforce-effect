@@ -2,7 +2,7 @@ import parser from "@typescript-eslint/parser";
 import { RuleTester } from "@typescript-eslint/rule-tester";
 import { afterAll, describe, it } from "vitest";
 
-import rule from "../../src/rules/no-type-assertion.js";
+import rule from "../../src/rules/ban-vanilla/no-type-assertion.js";
 
 RuleTester.afterAll = afterAll;
 RuleTester.describe = describe;
@@ -32,11 +32,11 @@ ruleTester.run("no-type-assertion", rule, {
   invalid: [
     {
       code: "const value = input as string;",
-      errors: [{ messageId: "noTypeAssertion" }],
+      errors: [{ messageId: "noAsAssertion" }],
     },
     {
       code: "const value = <string>input;",
-      errors: [{ messageId: "noTypeAssertion" }],
+      errors: [{ messageId: "noAngleAssertion" }],
     },
   ],
 });

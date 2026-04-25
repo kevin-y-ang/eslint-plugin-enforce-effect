@@ -8,5 +8,5 @@ export interface EnforceEffectRuleDocs {
 
 export const createRule = ESLintUtils.RuleCreator<EnforceEffectRuleDocs>(
   (name) =>
-    `https://github.com/bytedance/eslint-plugin-enforce-effect/blob/main/docs/rules/${name}.md`,
+    `https://github.com/kevin-y-ang/eslint-plugin-enforce-effect/blob/main/docs/rules/${name}.md`,
 );

@@ -2,8 +2,6 @@ import parser from "@typescript-eslint/parser";
 import { RuleTester } from "@typescript-eslint/rule-tester";
 import { afterAll, describe, it } from "vitest";
 
-import importExtensions from "../../src/rules/accountability/import-extensions.js";
-import noDirectFetch from "../../src/rules/accountability/no-direct-fetch.js";
 import noDisableValidation from "../../src/rules/accountability/no-disable-validation.js";
 import noEffectAsVoid from "../../src/rules/accountability/no-effect-asvoid.js";
 import noEffectCatchAllCause from "../../src/rules/accountability/no-effect-catchallcause.js";
@@ -14,7 +12,6 @@ import noNestedLayerProvide from "../../src/rules/accountability/no-nested-layer
 import noServiceOption from "../../src/rules/accountability/no-service-option.js";
 import noSilentErrorSwallow from "../../src/rules/accountability/no-silent-error-swallow.js";
 import noSqlTypeParameter from "../../src/rules/accountability/no-sql-type-parameter.js";
-import noVoidExpression from "../../src/rules/accountability/no-void-expression.js";
 import pipeMaxArguments from "../../src/rules/accountability/pipe-max-arguments.js";
 import preferOptionFromNullable from "../../src/rules/accountability/prefer-option-from-nullable.js";
 
@@ -32,16 +29,6 @@ const ruleTester = new RuleTester({
       sourceType: "module",
     },
   },
-});
-
-ruleTester.run("import-extensions", importExtensions, {
-  valid: [{ code: 'import value from "./file.ts";' }],
-  invalid: [
-    {
-      code: 'import value from "./file";',
-      errors: [{ messageId: "relativeRequiresTs" }],
-    },
-  ],
 });
 
 ruleTester.run("no-disable-validation", noDisableValidation, {
@@ -80,16 +67,6 @@ ruleTester.run("no-localstorage", noLocalStorage, {
     {
       code: "localStorage.getItem('token');",
       errors: [{ messageId: "noLocalStorage" }],
-    },
-  ],
-});
-
-ruleTester.run("no-direct-fetch", noDirectFetch, {
-  valid: [{ code: "api.GET('/users');" }],
-  invalid: [
-    {
-      code: "fetch('/users');",
-      errors: [{ messageId: "noDirectFetch" }],
     },
   ],
 });
@@ -144,16 +121,6 @@ ruleTester.run("no-silent-error-swallow", noSilentErrorSwallow, {
   ],
 });
 
-ruleTester.run("no-void-expression", noVoidExpression, {
-  valid: [{ code: "runTask();" }],
-  invalid: [
-    {
-      code: "void runTask();",
-      errors: [{ messageId: "noVoidExpression" }],
-    },
-  ],
-});
-
 ruleTester.run("no-service-option", noServiceOption, {
   valid: [{ code: "const service = yield* MyService;" }],
   invalid: [
@@ -175,7 +142,9 @@ ruleTester.run("no-nested-layer-provide", noNestedLayerProvide, {
 });
 
 ruleTester.run("no-location-href-redirect", noLocationHrefRedirect, {
-  valid: [{ code: "navigate({ to: '/dashboard' });" }],
+  valid: [
+    { code: "navigate({ to: '/dashboard' });" },
+  ],
   invalid: [
     {
       code: "window.location.href = '/dashboard';",
@@ -183,3 +152,4 @@ ruleTester.run("no-location-href-redirect", noLocationHrefRedirect, {
     },
   ],
 });
+

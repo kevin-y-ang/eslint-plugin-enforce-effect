@@ -12,7 +12,14 @@ const eslintCli = path.join(repoRoot, "node_modules/eslint/bin/eslint.js");
 const fixtureConfig = path.join(repoRoot, "fixtures/eslint.config.mjs");
 const validFixturesDir = path.join(repoRoot, "fixtures/valid");
 const invalidFixturesDir = path.join(repoRoot, "fixtures/invalid");
-const biomeFixturesDir = path.join(repoRoot, "fixtures/invalid/biome");
+const catenarycloudFixturesDir = path.join(
+  repoRoot,
+  "fixtures/invalid/catenarycloud",
+);
+const accountabilityFixturesDir = path.join(
+  repoRoot,
+  "fixtures/invalid/accountability",
+);
 
 const recommendedRuleNames = [
   "no-error",
@@ -32,7 +39,22 @@ const recommendedRuleNames = [
   "no-undefined",
 ];
 
-const biomeRuleNames = [
+const accountabilityRuleNames = [
+  "no-disable-validation",
+  "no-effect-asvoid",
+  "no-effect-catchallcause",
+  "no-effect-ignore",
+  "no-localstorage",
+  "no-location-href-redirect",
+  "no-nested-layer-provide",
+  "no-service-option",
+  "no-silent-error-swallow",
+  "no-sql-type-parameter",
+  "pipe-max-arguments",
+  "prefer-option-from-nullable",
+];
+
+const catenarycloudRuleNames = [
   "no-arrow-ladder",
   "no-branch-in-object",
   "no-call-tower",
@@ -129,14 +151,30 @@ describe("eslint cli fixtures", () => {
   );
 
   it(
-    "reports the expected violations for the biome invalid fixtures",
+    "reports the expected violations for the catenarycloud invalid fixtures",
     { timeout: 20000 },
     () => {
-      const result = runEslint(biomeFixturesDir);
+      const result = runEslint(catenarycloudFixturesDir);
 
       expect(result.status).toBe(1);
 
-      for (const ruleName of biomeRuleNames) {
+      for (const ruleName of catenarycloudRuleNames) {
+        expect(result.output, `expected enforce-effect/${ruleName}`).toContain(
+          `enforce-effect/${ruleName}`,
+        );
+      }
+    },
+  );
+
+  it(
+    "reports the expected violations for the accountability invalid fixtures",
+    { timeout: 20000 },
+    () => {
+      const result = runEslint(accountabilityFixturesDir);
+
+      expect(result.status).toBe(1);
+
+      for (const ruleName of accountabilityRuleNames) {
         expect(result.output, `expected enforce-effect/${ruleName}`).toContain(
           `enforce-effect/${ruleName}`,
         );

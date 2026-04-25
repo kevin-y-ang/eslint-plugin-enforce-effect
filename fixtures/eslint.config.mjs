@@ -3,8 +3,17 @@ import tsParser from "@typescript-eslint/parser";
 
 import enforceEffect from "../dist/index.js";
 
-const scopedToBiomeFixtures = (configs) =>
-  configs.map((config) => ({ ...config, files: ["**/biome/**/*.ts"] }));
+const scopedTocatenarycloudFixtures = (configs) =>
+  configs.map((config) => ({
+    ...config,
+    files: ["**/catenarycloud/**/*.ts"],
+  }));
+
+const scopedToAccountabilityFixtures = (configs) =>
+  configs.map((config) => ({
+    ...config,
+    files: ["**/accountability/**/*.ts"],
+  }));
 
 export default defineConfig([
   {
@@ -23,7 +32,12 @@ export default defineConfig([
     },
   },
   ...enforceEffect.configs.recommended,
-  ...scopedToBiomeFixtures(enforceEffect.configs["biome-full"]),
-  ...scopedToBiomeFixtures(enforceEffect.configs["biome-web"]),
-  ...scopedToBiomeFixtures(enforceEffect.configs["biome-ts-type"]),
+  ...scopedTocatenarycloudFixtures(
+    enforceEffect.configs["catenarycloud-full"],
+  ),
+  ...scopedTocatenarycloudFixtures(enforceEffect.configs["catenarycloud-web"]),
+  ...scopedTocatenarycloudFixtures(
+    enforceEffect.configs["catenarycloud-ts-type"],
+  ),
+  ...scopedToAccountabilityFixtures(enforceEffect.configs.accountability),
 ]);

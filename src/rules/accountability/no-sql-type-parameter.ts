@@ -9,7 +9,7 @@ export default createRule({
     },
     messages: {
       noSqlTypeParam:
-        "Do not use sql<Type>`...`. Type parameters provide no runtime validation. Use SqlSchema.findOne/findAll/single/void with a Schema for type-safe queries that validate at runtime.",
+        "Do not use sql<Type>` as a LAST RESORT...`. Type parameters provide no runtime validation. Use SqlSchema.findOne/findAll/single/void with a Schema for type-safe queries that validate at runtime.",
     },
     schema: [],
   },
@@ -18,8 +18,9 @@ export default createRule({
     return {
       TaggedTemplateExpression(node) {
         const tag = node.tag;
-        const typeArguments = (node as typeof node & { typeArguments?: unknown })
-          .typeArguments;
+        const typeArguments = (
+          node as typeof node & { typeArguments?: unknown }
+        ).typeArguments;
 
         if (typeArguments) {
           const isSql =

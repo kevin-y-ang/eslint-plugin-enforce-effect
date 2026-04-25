@@ -2,11 +2,11 @@ import fs from "node:fs";
 
 import accountabilityRules from "./rules/accountability/index.js";
 import {
-  biomeCoreRuleNames,
-  biomeFullRuleNames,
-  biomeTsTypeRuleNames,
-  biomeWebRuleNames,
-} from "./rules/biome/index.js";
+  catenarycloudCoreRuleNames,
+  catenarycloudFullRuleNames,
+  catenarycloudTsTypeRuleNames,
+  catenarycloudWebRuleNames,
+} from "./rules/catenarycloud/index.js";
 import rules from "./rules/index.js";
 
 const pkg = JSON.parse(
@@ -101,29 +101,32 @@ const accountability = [
   },
 ];
 
-const biomeCore = configFromRuleNames(
-  "enforce-effect/biome-core",
-  biomeCoreRuleNames,
+const catenarycloudCore = configFromRuleNames(
+  "enforce-effect/catenarycloud-core",
+  catenarycloudCoreRuleNames,
   ["warn-effect-sync-wrapper"],
 );
 
-const biomeWeb = configFromRuleNames("enforce-effect/biome-web", biomeWebRuleNames);
-const biomeTsType = configFromRuleNames(
-  "enforce-effect/biome-ts-type",
-  biomeTsTypeRuleNames,
+const catenarycloudWeb = configFromRuleNames(
+  "enforce-effect/catenarycloud-web",
+  catenarycloudWebRuleNames,
 );
-const biomeFull = configFromRuleNames(
-  "enforce-effect/biome-full",
-  biomeFullRuleNames,
+const catenarycloudTsType = configFromRuleNames(
+  "enforce-effect/catenarycloud-ts-type",
+  catenarycloudTsTypeRuleNames,
+);
+const catenarycloudFull = configFromRuleNames(
+  "enforce-effect/catenarycloud-full",
+  catenarycloudFullRuleNames,
   ["warn-effect-sync-wrapper"],
 );
 
 plugin.configs = {
   accountability,
-  "biome-core": biomeCore,
-  "biome-full": biomeFull,
-  "biome-ts-type": biomeTsType,
-  "biome-web": biomeWeb,
+  "catenarycloud-core": catenarycloudCore,
+  "catenarycloud-full": catenarycloudFull,
+  "catenarycloud-ts-type": catenarycloudTsType,
+  "catenarycloud-web": catenarycloudWeb,
   recommended,
   recommendedTypeChecked,
 };
@@ -131,11 +134,11 @@ plugin.configs = {
 export default plugin;
 export {
   accountability,
-  biomeCore,
-  biomeFull,
-  biomeTsType,
-  biomeWeb,
   recommended,
   recommendedTypeChecked,
+  catenarycloudCore,
+  catenarycloudFull,
+  catenarycloudTsType,
+  catenarycloudWeb,
   rules,
 };
