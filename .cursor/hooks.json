@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "hooks": {
+    "postToolUse": [
+      {
+        "command": ".cursor/hooks/lint-edited-file.sh",
+        "matcher": "Write|StrReplace|EditNotebook",
+        "timeout": 30
+      }
+    ]
+  }
+}

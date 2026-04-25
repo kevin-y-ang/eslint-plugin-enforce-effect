@@ -13,7 +13,7 @@ export default createRule({
     schema: [],
     messages: {
       noTry:
-        "The user prefers `Effect.try` and `Effect.tryPromise` over vanilla `try` blocks. If this logic cannot be implemented with `Effect.try` or `Effect.tryPromise`, use `// eslint-disable-next-line no-try -- <justification>` as a LAST RESORT. The justification MUST explain why `Effect.try` doesn't accomplish your goal, and MUST be no less than 40 characters.",
+        "The user prefers Effect primitives like `Effect.try` / `Effect.tryPromise` (to lift sync/async exceptions into the `Effect` model), `Effect.catch` / `Effect.catchTag` / `Effect.catchTags` / `Effect.catchCause` (for recovery), and `Effect.ensuring` / `Effect.onExit` / `Effect.scoped` with `Effect.acquireRelease` (for `finally`-style cleanup) over vanilla `try` / `catch` / `finally` blocks. If this logic cannot be implemented with any of these primitives, use `// eslint-disable-next-line no-try -- <justification>` as a LAST RESORT. The justification MUST explain why none of these primitives accomplish your goal, and MUST be no less than 40 characters.",
     },
   },
   defaultOptions: [],

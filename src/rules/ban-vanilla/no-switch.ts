@@ -13,7 +13,7 @@ export default createRule({
     schema: [],
     messages: {
       noSwitch:
-        "The user prefers `Match` over vanilla `switch` statements. If this logic cannot be implemented with `Match`, use `// eslint-disable-next-line no-switch -- <justification>` as a LAST RESORT. The justification MUST explain why `Match` doesn't accomplish your goal, and MUST be no less than 40 characters.",
+        "The user prefers Effect primitives like `Match.type` / `Match.value` (with `Match.when` + `Match.exhaustive`), `Match.tags` / `Match.tagsExhaustive` / `Match.typeTags` / `Match.valueTags` (for `_tag` unions), `Option.match`, `Result.match`, `Exit.match`, or `Effect.matchCause` over vanilla `switch` statements. If this logic cannot be implemented with any of these primitives, use `// eslint-disable-next-line no-switch -- <justification>` as a LAST RESORT. The justification MUST explain why none of these primitives accomplish your goal, and MUST be no less than 40 characters.",
     },
   },
   defaultOptions: [],

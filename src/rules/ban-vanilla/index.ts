@@ -13,9 +13,8 @@ import noThrow from "./no-throw.js";
 import noTry from "./no-try.js";
 import noTypeAssertion from "./no-type-assertion.js";
 import noUndefined from "./no-undefined.js";
-import requireDescription from "./require-description.js";
+import requireLintDisableJustification from "./require-lint-disable-justification.js";
 import noFetch from "./no-fetch.js";
-import noVoidExpression from "./no-void-expression.js";
 
 const banVanillaRules = {
   "no-error": noError,
@@ -33,9 +32,8 @@ const banVanillaRules = {
   "no-try": noTry,
   "no-type-assertion": noTypeAssertion,
   "no-undefined": noUndefined,
-  "require-description": requireDescription,
+  "require-lint-disable-justification": requireLintDisableJustification,
   "no-fetch": noFetch,
-  "no-void-expression": noVoidExpression,
 };
 
 export default banVanillaRules;

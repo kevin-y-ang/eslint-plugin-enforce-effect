@@ -42,7 +42,7 @@ export default createRule({
     schema: [],
     messages: {
       noProcessEnv:
-        "The user prefers `Config` over vanilla `process.env` access. If this logic cannot be implemented with `Config`, use `// eslint-disable-next-line no-process-env -- <justification>` as a LAST RESORT. The justification MUST explain why `Config` doesn't accomplish your goal, and MUST be no less than 40 characters.",
+        "The user prefers Effect primitives like `Config` (e.g. `Config.string`, `Config.integer`, `Config.boolean`, `Config.schema`, `Config.nested`, `Config.withDefault`) and the `ConfigProvider` service (typically backed by `ConfigProvider.fromEnv`, swappable via `ConfigProvider.layer` for tests) over vanilla `process.env` access. If this logic cannot be implemented with any of these primitives, use `// eslint-disable-next-line no-process-env -- <justification>` as a LAST RESORT. The justification MUST explain why none of these primitives accomplish your goal, and MUST be no less than 40 characters.",
     },
   },
   defaultOptions: [],

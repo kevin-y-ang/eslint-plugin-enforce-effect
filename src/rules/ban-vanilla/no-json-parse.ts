@@ -44,7 +44,7 @@ export default createRule({
     schema: [],
     messages: {
       noJsonParse:
-        "The user prefers `Schema.fromJsonString` over vanilla `JSON.parse(...)` calls. If this logic cannot be implemented with `Schema.fromJsonString`, use `// eslint-disable-next-line no-json-parse -- <justification>` as a LAST RESORT. The justification MUST explain why `Schema.fromJsonString` doesn't accomplish your goal, and MUST be no less than 40 characters.",
+        "The user prefers Effect primitives like `Schema.fromJsonString` (when a schema exists) or `Schema.UnknownFromJsonString` (when the payload is `unknown`) over vanilla `JSON.parse(...)` calls. If this logic cannot be implemented with any of these primitives, use `// eslint-disable-next-line no-json-parse -- <justification>` as a LAST RESORT. The justification MUST explain why none of these primitives accomplish your goal, and MUST be no less than 40 characters.",
     },
   },
   defaultOptions: [],

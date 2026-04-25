@@ -16,11 +16,15 @@ const DIRECTIVE_KINDS = [
 
 type DirectiveKind = (typeof DIRECTIVE_KINDS)[number];
 
+type RuleMatcher = ReadonlyArray<string> | string;
+
 type Options = [
   {
     ignore?: ReadonlyArray<DirectiveKind>;
     minLength?: number;
     maxLength?: number;
+    ignoreRules?: RuleMatcher;
+    requireRules?: RuleMatcher;
   },
 ];
 type MessageIds =
@@ -35,6 +39,7 @@ const DESCRIPTION_SEPARATOR = /\s-{2,}\s/u;
 
 interface ParsedDirective {
   kind: string;
+  body: string;
   description: string | null;
 }
 
@@ -49,7 +54,50 @@ function parseDirectiveText(text: string): ParsedDirective | null {
     return null;
   }
 
-  return { kind: match[1], description };
+  return {
+    kind: match[1],
+    body: head.slice(match[0].length).trim(),
+    description,
+  };
+}
+
+function escapeForRegex(text: string): string {
+  return text.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&");
+}
+
+// Build a body matcher. Array form matches each name with a non-rule-name
+// boundary (so "no-console" doesn't match "no-console-log") but allows any
+// surrounding punctuation that appears in real directive comments
+// (whitespace, commas, colons, quotes, brackets, etc.). Regex form is tested
+// against the body verbatim.
+function compileRuleMatcher(
+  matcher: RuleMatcher | undefined,
+  optionName: string,
+): ((body: string) => boolean) | null {
+  if (matcher === undefined) {
+    return null;
+  }
+  if (typeof matcher === "string") {
+    let regex: RegExp;
+    try {
+      regex = new RegExp(matcher, "u");
+    } catch (cause) {
+      throw new Error(
+        `enforce-effect/require-lint-disable-justification: ${optionName} regex is invalid: ${(cause as Error).message}`,
+        { cause },
+      );
+    }
+    return (body) => regex.test(body);
+  }
+  if (matcher.length === 0) {
+    return null;
+  }
+  const alternation = matcher.map(escapeForRegex).join("|");
+  const regex = new RegExp(
+    `(?<![@\\w/-])(?:${alternation})(?![@\\w/-])`,
+    "u",
+  );
+  return (body) => regex.test(body);
 }
 
 function parseDirectiveComment(
@@ -77,7 +125,7 @@ function parseDirectiveComment(
 }
 
 export default createRule<Options, MessageIds>({
-  name: "require-description",
+  name: "require-lint-disable-justification",
   meta: {
     type: "suggestion",
     docs: {
@@ -96,7 +144,7 @@ export default createRule<Options, MessageIds>({
       {
         type: "object",
         description:
-          "Options for require-description: which directive kinds to skip and the allowed length range for descriptions.",
+          "Options for require-lint-disable-justification: which directive kinds to skip and the allowed length range for descriptions.",
         properties: {
           ignore: {
             type: "array",
@@ -121,6 +169,48 @@ export default createRule<Options, MessageIds>({
               "Maximum number of characters allowed in a directive comment description.",
             minimum: 1,
           },
+          ignoreRules: {
+            description:
+              "Lint rule names that do not require descriptions when named in a directive. Either an array of exact rule names or a regex pattern string.",
+            oneOf: [
+              {
+                type: "array",
+                description:
+                  "Exact lint rule names whose directive comments are exempt.",
+                items: {
+                  type: "string",
+                  description: "An exact lint rule name.",
+                },
+                uniqueItems: true,
+              },
+              {
+                type: "string",
+                description:
+                  "Regex pattern string; rule names matching this pattern are exempt.",
+              },
+            ],
+          },
+          requireRules: {
+            description:
+              "When set, descriptions are required only for directives that name at least one matching rule (or for bare directives that target everything). Either an array of exact rule names or a regex pattern string.",
+            oneOf: [
+              {
+                type: "array",
+                description:
+                  "Exact lint rule names whose directive comments must include a description.",
+                items: {
+                  type: "string",
+                  description: "An exact lint rule name.",
+                },
+                uniqueItems: true,
+              },
+              {
+                type: "string",
+                description:
+                  "Regex pattern string; descriptions are required when at least one named rule matches.",
+              },
+            ],
+          },
         },
         additionalProperties: false,
       },
@@ -132,6 +222,14 @@ export default createRule<Options, MessageIds>({
     const ignores = new Set<string>(options.ignore ?? []);
     const minLength = options.minLength ?? 0;
     const maxLength = options.maxLength ?? Number.POSITIVE_INFINITY;
+    const matchesIgnoreRule = compileRuleMatcher(
+      options.ignoreRules,
+      "ignoreRules",
+    );
+    const matchesRequireRule = compileRuleMatcher(
+      options.requireRules,
+      "requireRules",
+    );
     const sourceCode = context.sourceCode;
 
     if (
@@ -140,7 +238,7 @@ export default createRule<Options, MessageIds>({
       maxLength < minLength
     ) {
       throw new Error(
-        `enforce-effect/require-description: maxLength (${maxLength}) must be >= minLength (${minLength}).`,
+        `enforce-effect/require-lint-disable-justification: maxLength (${maxLength}) must be >= minLength (${minLength}).`,
       );
     }
 
@@ -153,6 +251,18 @@ export default createRule<Options, MessageIds>({
           }
           if (ignores.has(directive.kind)) {
             continue;
+          }
+
+          // Bare directives (e.g. `/* eslint-disable */`) target every rule,
+          // so they can never be filtered out by ignoreRules/requireRules.
+          // Directives with a body get matched against the body text.
+          if (directive.body !== "") {
+            if (matchesIgnoreRule && matchesIgnoreRule(directive.body)) {
+              continue;
+            }
+            if (matchesRequireRule && !matchesRequireRule(directive.body)) {
+              continue;
+            }
           }
 
           // Report "before" the comment's column so the directive itself

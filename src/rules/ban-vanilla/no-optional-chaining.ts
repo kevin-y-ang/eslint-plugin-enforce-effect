@@ -12,7 +12,7 @@ export default createRule({
     schema: [],
     messages: {
       noOptionalChaining:
-        "The user prefers `Option.flatMap` over vanilla `?.` optional chaining. If this logic cannot be implemented with `Option.flatMap`, use `// eslint-disable-next-line no-optional-chaining -- <justification>` as a LAST RESORT. The justification MUST explain why `Option.flatMap` doesn't accomplish your goal, and MUST be no less than 40 characters.",
+        "The user prefers Effect primitives like `Option.fromNullishOr` / `Option.liftNullishOr` (to enter `Option`), `Option.flatMap` / `Option.flatMapNullishOr` (to step through a path), `Option.map`, `Option.filterMap`, and `Option.getOrElse` / `Option.match` (to finish with a default or branch) over vanilla `?.` optional chaining. If this logic cannot be implemented with any of these primitives, use `// eslint-disable-next-line no-optional-chaining -- <justification>` as a LAST RESORT. The justification MUST explain why none of these primitives accomplish your goal, and MUST be no less than 40 characters.",
     },
   },
   defaultOptions: [],

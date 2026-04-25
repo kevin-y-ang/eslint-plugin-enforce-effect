@@ -4,3 +4,7 @@ coverage
 .DS_Store
 
 .reference/
+
+.env
+.env.*
+!.env.example

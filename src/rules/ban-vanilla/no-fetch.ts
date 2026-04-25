@@ -9,7 +9,7 @@ export default createRule({
     },
     messages: {
       noDirectFetch:
-        "The user prefers `FetchHttpClient` over vanilla `fetch()`. If this logic cannot be implemented with `FetchHttpClient`, use `// eslint-disable-next-line no-direct-fetch -- <justification>` as a LAST RESORT. The justification MUST explain why `FetchHttpClient` doesn't accomplish your goal, and MUST be no less than 40 characters.",
+        "The user prefers Effect primitives like `HttpClient`, `FetchHttpClient`, `HttpClientRequest`, `HttpClientResponse`, or `HttpApiClient` over vanilla `fetch()`. If this logic cannot be implemented with any of these primitives, use `// eslint-disable-next-line no-direct-fetch -- <justification>` as a LAST RESORT. The justification MUST explain why none of these primitives accomplish your goal, and MUST be no less than 40 characters.",
     },
     schema: [],
   },
