@@ -1,6 +1,6 @@
 {
   "name": "@kevin-y-ang/eslint-plugin-enforce-effect",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "ESLint plugin skeleton for enforcing Effect-oriented patterns in TypeScript codebases.",
   "type": "module",
   "main": "./dist/index.js",
