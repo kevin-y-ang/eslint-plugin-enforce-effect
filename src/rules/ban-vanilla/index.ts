@@ -1,6 +1,9 @@
+import noDate from "./no-date.js";
+import noDateInferred from "./no-date-inferred.js";
 import noError from "./no-error.js";
 import noExplicitFunctionReturnType from "./no-explicit-function-return-type.js";
 import noFor from "./no-for.js";
+import noFs from "./no-fs.js";
 import noJsonParse from "./no-json-parse.js";
 import noNodeChildProcess from "./no-node-child-process.js";
 import noNull from "./no-null.js";
@@ -17,9 +20,12 @@ import requireLintDisableJustification from "./require-lint-disable-justificatio
 import noFetch from "./no-fetch.js";
 
 const banVanillaRules = {
+  "no-date": noDate,
+  "no-date-inferred": noDateInferred,
   "no-error": noError,
   "no-explicit-function-return-type": noExplicitFunctionReturnType,
   "no-for": noFor,
+  "no-fs": noFs,
   "no-json-parse": noJsonParse,
   "no-node-child-process": noNodeChildProcess,
   "no-null": noNull,

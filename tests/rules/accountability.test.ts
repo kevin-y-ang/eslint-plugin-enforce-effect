@@ -12,6 +12,7 @@ import noNestedLayerProvide from "../../src/rules/accountability/no-nested-layer
 import noServiceOption from "../../src/rules/accountability/no-service-option.js";
 import noSilentErrorSwallow from "../../src/rules/accountability/no-silent-error-swallow.js";
 import noSqlTypeParameter from "../../src/rules/accountability/no-sql-type-parameter.js";
+import noVoidExpression from "../../src/rules/accountability/no-void-expression.js";
 import pipeMaxArguments from "../../src/rules/accountability/pipe-max-arguments.js";
 import preferOptionFromNullable from "../../src/rules/accountability/prefer-option-from-nullable.js";
 
@@ -30,6 +31,7 @@ const ruleTester = new RuleTester({
     },
   },
 });
+
 
 ruleTester.run("no-disable-validation", noDisableValidation, {
   valid: [{ code: "const config = { disableValidation: false };" }],
@@ -70,6 +72,7 @@ ruleTester.run("no-localstorage", noLocalStorage, {
     },
   ],
 });
+
 
 ruleTester.run("pipe-max-arguments", pipeMaxArguments, {
   valid: [{ code: "value.pipe(a, b, c);" }],
@@ -117,6 +120,16 @@ ruleTester.run("no-silent-error-swallow", noSilentErrorSwallow, {
     {
       code: "const value = Effect.catchAll(() => Effect.void);",
       errors: [{ messageId: "noSilentSwallow" }],
+    },
+  ],
+});
+
+ruleTester.run("no-void-expression", noVoidExpression, {
+  valid: [{ code: "runTask();" }],
+  invalid: [
+    {
+      code: "void runTask();",
+      errors: [{ messageId: "noVoidExpression" }],
     },
   ],
 });

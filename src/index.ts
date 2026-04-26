@@ -1,6 +1,7 @@
 import fs from "node:fs";
 
 import accountabilityRules from "./rules/accountability/index.js";
+import banVanillaRules from "./rules/ban-vanilla/index.js";
 import {
   catenarycloudCoreRuleNames,
   catenarycloudFullRuleNames,
@@ -18,10 +19,15 @@ const pkg = JSON.parse(
 
 const namespace = "enforce-effect";
 
+const banVanillaRuleNames = new Set(Object.keys(banVanillaRules));
+
+function severityFor(ruleName: string): "error" | "warn" {
+  return banVanillaRuleNames.has(ruleName) ? "error" : "warn";
+}
+
 function configFromRuleNames(
   configName: string,
   ruleNames: readonly string[],
-  warnRuleNames: readonly string[] = [],
 ) {
   return [
     {
@@ -32,7 +38,7 @@ function configFromRuleNames(
       rules: Object.fromEntries(
         ruleNames.map((ruleName) => [
           `${namespace}/${ruleName}`,
-          warnRuleNames.includes(ruleName) ? "warn" : "error",
+          severityFor(ruleName),
         ]),
       ),
     },
@@ -50,41 +56,37 @@ const plugin = {
   processors: {},
 };
 
-const recommended = [
-  {
-    name: "enforce-effect/recommended",
-    plugins: {
-      [namespace]: plugin,
-    },
-    rules: {
-      [`${namespace}/no-error`]: "error",
-      [`${namespace}/no-explicit-function-return-type`]: "error",
-      [`${namespace}/no-for`]: "error",
-      [`${namespace}/no-json-parse`]: "error",
-      [`${namespace}/no-null`]: "error",
-      [`${namespace}/no-nullish-coalescing`]: "error",
-      [`${namespace}/no-node-child-process`]: "error",
-      [`${namespace}/no-optional-chaining`]: "error",
-      [`${namespace}/no-promise`]: "error",
-      [`${namespace}/no-process-env`]: "error",
-      [`${namespace}/no-switch`]: "error",
-      [`${namespace}/no-throw`]: "error",
-      [`${namespace}/no-type-assertion`]: "error",
-      [`${namespace}/no-try`]: "error",
-      [`${namespace}/no-undefined`]: "error",
-    },
-  },
-];
+const recommendedRuleNames = [
+  "no-date",
+  "no-error",
+  "no-explicit-function-return-type",
+  "no-for",
+  "no-fs",
+  "no-json-parse",
+  "no-null",
+  "no-nullish-coalescing",
+  "no-node-child-process",
+  "no-optional-chaining",
+  "no-promise",
+  "no-process-env",
+  "no-switch",
+  "no-throw",
+  "no-type-assertion",
+  "no-try",
+  "no-undefined",
+] as const;
 
-const recommendedTypeChecked = [
-  {
-    name: "enforce-effect/recommended-type-checked",
-    plugins: {
-      [namespace]: plugin,
-    },
-    rules: {},
-  },
-];
+const recommended = configFromRuleNames(
+  "enforce-effect/recommended",
+  recommendedRuleNames,
+);
+
+const recommendedTypeCheckedRuleNames = ["no-date-inferred"] as const;
+
+const recommendedTypeChecked = configFromRuleNames(
+  "enforce-effect/recommended-type-checked",
+  recommendedTypeCheckedRuleNames,
+);
 
 const accountability = [
   {
@@ -95,7 +97,7 @@ const accountability = [
     rules: Object.fromEntries(
       Object.keys(accountabilityRules).map((ruleName) => [
         `${namespace}/${ruleName}`,
-        "error",
+        severityFor(ruleName),
       ]),
     ),
   },
@@ -104,7 +106,6 @@ const accountability = [
 const catenarycloudCore = configFromRuleNames(
   "enforce-effect/catenarycloud-core",
   catenarycloudCoreRuleNames,
-  ["warn-effect-sync-wrapper"],
 );
 
 const catenarycloudWeb = configFromRuleNames(
@@ -118,7 +119,6 @@ const catenarycloudTsType = configFromRuleNames(
 const catenarycloudFull = configFromRuleNames(
   "enforce-effect/catenarycloud-full",
   catenarycloudFullRuleNames,
-  ["warn-effect-sync-wrapper"],
 );
 
 plugin.configs = {

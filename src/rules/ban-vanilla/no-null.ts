@@ -13,7 +13,7 @@ export default createRule({
     schema: [],
     messages: {
       noNull:
-        "The user prefers Effect primitives like `Option` (with `Option.fromNullishOr` / `Option.fromNullOr` at boundaries), `Result` (when absence carries a typed reason), or `Effect` (with a typed `E` channel for async absence) over vanilla `null`. If this logic cannot be implemented with any of these primitives, use `// eslint-disable-next-line no-null -- <justification>` as a LAST RESORT. The justification MUST explain why none of these primitives accomplish your goal, and MUST be no less than 40 characters.",
+        "The user prefers Effect primitives like `Option`, `Option.fromNullishOr`, `Option.fromNullOr`, `Schema.NullOr`, `Schema.NullishOr`, `Schema.Option`, `Schema.UndefinedOr`, `Result`, or `Effect` over vanilla `null`. If this logic cannot be implemented with any of these primitives, use `// eslint-disable-next-line no-null -- <justification>` as a LAST RESORT. The justification MUST explain why none of these primitives accomplish your goal, and MUST be no less than 40 characters. See /Users/bytedance/eslint-plugin-enforce-effect/docs/rules/no-null.md",
     },
   },
   defaultOptions: [],

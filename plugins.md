@@ -1,10 +1,10 @@
 ---
 title: Create Plugins
 eleventyNavigation:
-    key: create plugins
-    parent: extend eslint
-    title: Create Plugins
-    order: 2
+  key: create plugins
+  parent: extend eslint
+  title: Create Plugins
+  order: 2
 ---
 
 ESLint plugins extend ESLint with additional functionality. In most cases, you'll extend ESLint by creating plugins that encapsulate the additional functionality you want to share across multiple projects.
@@ -22,10 +22,10 @@ To get started, create a JavaScript file and export an object containing the pro
 
 ```js
 const plugin = {
-	meta: {},
-	configs: {},
-	rules: {},
-	processors: {},
+  meta: {},
+  configs: {},
+  rules: {},
+  processors: {},
 };
 
 // for ESM
@@ -43,15 +43,15 @@ For easier debugging and more effective caching of plugins, it's recommended to 
 
 ```js
 const plugin = {
-	// preferred location of name and version
-	meta: {
-		name: "eslint-plugin-example",
-		version: "1.2.3",
-		namespace: "example",
-	},
-	rules: {
-		// add rules here
-	},
+  // preferred location of name and version
+  meta: {
+    name: "eslint-plugin-example",
+    version: "1.2.3",
+    namespace: "example",
+  },
+  rules: {
+    // add rules here
+  },
 };
 
 // for ESM
@@ -68,20 +68,18 @@ The easiest way to add the name and version is by reading this information from 
 ```js
 import fs from "fs";
 
-const pkg = JSON.parse(
-	fs.readFileSync(new URL("./package.json", import.meta.url), "utf8"),
-);
+const pkg = JSON.parse(fs.readFileSync(new URL("./package.json", import.meta.url), "utf8"));
 
 const plugin = {
-	// preferred location of name and version
-	meta: {
-		name: pkg.name,
-		version: pkg.version,
-		namespace: "example",
-	},
-	rules: {
-		// add rules here
-	},
+  // preferred location of name and version
+  meta: {
+    name: pkg.name,
+    version: pkg.version,
+    namespace: "example",
+  },
+  rules: {
+    // add rules here
+  },
 };
 
 export default plugin;
@@ -95,16 +93,16 @@ While there are no restrictions on plugin names, it helps others to find your pl
 
 :::
 
-As an alternative, you can also expose `name` and `version` properties at the root of your plugin, such as:
+As an alterVanilla, you can also expose `name` and `version` properties at the root of your plugin, such as:
 
 ```js
 const plugin = {
-	// alternate location of name and version
-	name: "eslint-plugin-example",
-	version: "1.2.3",
-	rules: {
-		// add rules here
-	},
+  // alternate location of name and version
+  name: "eslint-plugin-example",
+  version: "1.2.3",
+  rules: {
+    // add rules here
+  },
 };
 
 // for ESM
@@ -124,17 +122,17 @@ Plugins can expose custom rules for use in ESLint. To do so, the plugin must exp
 
 ```js
 const plugin = {
-	meta: {
-		name: "eslint-plugin-example",
-		version: "1.2.3",
-	},
-	rules: {
-		"dollar-sign": {
-			create(context) {
-				// rule implementation ...
-			},
-		},
-	},
+  meta: {
+    name: "eslint-plugin-example",
+    version: "1.2.3",
+  },
+  rules: {
+    "dollar-sign": {
+      create(context) {
+        // rule implementation ...
+      },
+    },
+  },
 };
 
 // for ESM
@@ -152,15 +150,15 @@ import { defineConfig } from "eslint/config";
 import example from "eslint-plugin-example";
 
 export default defineConfig([
-	{
-		files: ["**/*.js"], // any patterns you want to apply the config to
-		plugins: {
-			example,
-		},
-		rules: {
-			"example/dollar-sign": "error",
-		},
-	},
+  {
+    files: ["**/*.js"], // any patterns you want to apply the config to
+    plugins: {
+      example,
+    },
+    rules: {
+      "example/dollar-sign": "error",
+    },
+  },
 ]);
 ```
 
@@ -174,20 +172,20 @@ Plugins can expose [processors](custom-processors) for use in configuration file
 
 ```js
 const plugin = {
-	meta: {
-		name: "eslint-plugin-example",
-		version: "1.2.3",
-	},
-	processors: {
-		"processor-name": {
-			preprocess(text, filename) {
-				/* ... */
-			},
-			postprocess(messages, filename) {
-				/* ... */
-			},
-		},
-	},
+  meta: {
+    name: "eslint-plugin-example",
+    version: "1.2.3",
+  },
+  processors: {
+    "processor-name": {
+      preprocess(text, filename) {
+        /* ... */
+      },
+      postprocess(messages, filename) {
+        /* ... */
+      },
+    },
+  },
 };
 
 // for ESM
@@ -205,13 +203,13 @@ import { defineConfig } from "eslint/config";
 import example from "eslint-plugin-example";
 
 export default defineConfig([
-	{
-		files: ["**/*.txt"],
-		plugins: {
-			example,
-		},
-		processor: "example/processor-name",
-	},
+  {
+    files: ["**/*.txt"],
+    plugins: {
+      example,
+    },
+    processor: "example/processor-name",
+  },
 ]);
 ```
 
@@ -223,42 +221,42 @@ You can include individual rules from a plugin in a config that's also included 
 
 ```js
 const plugin = {
-	meta: {
-		name: "eslint-plugin-example",
-		version: "1.2.3",
-	},
-	configs: {},
-	rules: {
-		"dollar-sign": {
-			create(context) {
-				// rule implementation ...
-			},
-		},
-	},
+  meta: {
+    name: "eslint-plugin-example",
+    version: "1.2.3",
+  },
+  configs: {},
+  rules: {
+    "dollar-sign": {
+      create(context) {
+        // rule implementation ...
+      },
+    },
+  },
 };
 
 // assign configs here so we can reference `plugin`
 Object.assign(plugin.configs, {
-	recommended: [
-		{
-			plugins: {
-				example: plugin,
-			},
-			rules: {
-				"example/dollar-sign": "error",
-			},
-			languageOptions: {
-				globals: {
-					myGlobal: "readonly",
-				},
-				parserOptions: {
-					ecmaFeatures: {
-						jsx: true,
-					},
-				},
-			},
-		},
-	],
+  recommended: [
+    {
+      plugins: {
+        example: plugin,
+      },
+      rules: {
+        "example/dollar-sign": "error",
+      },
+      languageOptions: {
+        globals: {
+          myGlobal: "readonly",
+        },
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+        },
+      },
+    },
+  ],
 });
 
 // for ESM
@@ -278,13 +276,13 @@ import { defineConfig } from "eslint/config";
 import example from "eslint-plugin-example";
 
 export default defineConfig([
-	{
-		files: ["**/*.js"], // any patterns you want to apply the config to
-		plugins: {
-			example,
-		},
-		extends: ["example/recommended"],
-	},
+  {
+    files: ["**/*.js"], // any patterns you want to apply the config to
+    plugins: {
+      example,
+    },
+    extends: ["example/recommended"],
+  },
 ]);
 ```
 
@@ -300,59 +298,59 @@ If you're working on a plugin that has existed prior to ESLint v9.0.0, then you 
 
 ```js
 const plugin = {
-	meta: {
-		name: "eslint-plugin-example",
-		version: "1.2.3",
-	},
-	configs: {},
-	rules: {
-		"dollar-sign": {
-			create(context) {
-				// rule implementation ...
-			},
-		},
-	},
+  meta: {
+    name: "eslint-plugin-example",
+    version: "1.2.3",
+  },
+  configs: {},
+  rules: {
+    "dollar-sign": {
+      create(context) {
+        // rule implementation ...
+      },
+    },
+  },
 };
 
 // assign configs here so we can reference `plugin`
 Object.assign(plugin.configs, {
-	// flat config format
-	"flat/recommended": [
-		{
-			plugins: {
-				example: plugin,
-			},
-			rules: {
-				"example/dollar-sign": "error",
-			},
-			languageOptions: {
-				globals: {
-					myGlobal: "readonly",
-				},
-				parserOptions: {
-					ecmaFeatures: {
-						jsx: true,
-					},
-				},
-			},
-		},
-	],
+  // flat config format
+  "flat/recommended": [
+    {
+      plugins: {
+        example: plugin,
+      },
+      rules: {
+        "example/dollar-sign": "error",
+      },
+      languageOptions: {
+        globals: {
+          myGlobal: "readonly",
+        },
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+        },
+      },
+    },
+  ],
 
-	// eslintrc format
-	recommended: {
-		plugins: ["example"],
-		rules: {
-			"example/dollar-sign": "error",
-		},
-		globals: {
-			myGlobal: "readonly",
-		},
-		parserOptions: {
-			ecmaFeatures: {
-				jsx: true,
-			},
-		},
-	},
+  // eslintrc format
+  recommended: {
+    plugins: ["example"],
+    rules: {
+      "example/dollar-sign": "error",
+    },
+    globals: {
+      myGlobal: "readonly",
+    },
+    parserOptions: {
+      ecmaFeatures: {
+        jsx: true,
+      },
+    },
+  },
 });
 
 // for ESM
@@ -382,12 +380,12 @@ In order to make your plugin available publicly, you have to publish it on npm. 
 
 1. **List ESLint as a peer dependency.** Because plugins are intended for use with ESLint, it's important to add the `eslint` package as a peer dependency. To do so, manually edit your `package.json` file to include a `peerDependencies` block, like this:
 
-    ```json
-    {
-    	"peerDependencies": {
-    		"eslint": ">=10.0.0"
-    	}
-    }
-    ```
+   ```json
+   {
+     "peerDependencies": {
+       "eslint": ">=10.0.0"
+     }
+   }
+   ```
 
 2. **Specify keywords.** ESLint plugins should specify `eslint`, `eslintplugin` and `eslint-plugin` as [keywords](https://docs.npmjs.com/cli/v9/configuring-npm/package-json#keywords) in your `package.json` file.

@@ -42,7 +42,7 @@ export default createRule({
     schema: [],
     messages: {
       noProcessEnv:
-        "The user prefers Effect primitives like `Config` (e.g. `Config.string`, `Config.integer`, `Config.boolean`, `Config.schema`, `Config.nested`, `Config.withDefault`) and the `ConfigProvider` service (typically backed by `ConfigProvider.fromEnv`, swappable via `ConfigProvider.layer` for tests) over vanilla `process.env` access. If this logic cannot be implemented with any of these primitives, use `// eslint-disable-next-line no-process-env -- <justification>` as a LAST RESORT. The justification MUST explain why none of these primitives accomplish your goal, and MUST be no less than 40 characters.",
+        "The user prefers Effect primitives like `Config.string`, `Config.int`, `Config.boolean`, `Config.redacted`, `Config.url`, `Config.port`, `Config.duration`, `Config.literal`, `Config.schema`, `Config.nested`, `Config.withDefault`, `ConfigProvider.fromEnv`, `ConfigProvider.fromDotEnv`, `ConfigProvider.fromUnknown`, or `ConfigProvider.layer` over vanilla `process.env` access. If this logic cannot be implemented with any of these primitives, use `// eslint-disable-next-line no-process-env -- <justification>` as a LAST RESORT. The justification MUST explain why none of these primitives accomplish your goal, and MUST be no less than 40 characters. See /Users/bytedance/eslint-plugin-enforce-effect/docs/rules/no-process-env.md",
     },
   },
   defaultOptions: [],

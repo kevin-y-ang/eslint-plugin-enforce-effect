@@ -26,9 +26,9 @@ export default createRule({
     schema: [],
     messages: {
       noErrorConstructor:
-        "The user prefers Effect primitives like `Data.TaggedError`, `Data.Error`, `Schema.TaggedErrorClass`, `Schema.ErrorClass`, or `Cause.UnknownError` over vanilla `Error(...)` construction. If this logic cannot be implemented with any of these primitives, use `// eslint-disable-next-line no-error -- <justification>` as a LAST RESORT. The justification MUST explain why none of these primitives accomplish your goal, and MUST be no less than 40 characters.",
+        "The user prefers Effect primitives like `Data.TaggedError`, `Schema.TaggedErrorClass`, `Data.Error`, `Schema.ErrorClass`, `Cause.NoSuchElementError`, `Cause.TimeoutError`, `Cause.IllegalArgumentError`, `Cause.ExceededCapacityError`, or `Cause.UnknownError` over vanilla `Error(...)` construction. If this logic cannot be implemented with any of these primitives, use `// eslint-disable-next-line no-error -- <justification>` as a LAST RESORT. The justification MUST explain why none of these primitives accomplish your goal, and MUST be no less than 40 characters. See /Users/bytedance/eslint-plugin-enforce-effect/docs/rules/no-error.md",
       noErrorType:
-        "The user prefers Effect primitives like `Data.TaggedError`, `Data.Error`, `Schema.TaggedErrorClass`, `Schema.ErrorClass`, or `Cause.YieldableError` over vanilla `Error` type references. If this logic cannot be implemented with any of these primitives, use `// eslint-disable-next-line no-error -- <justification>` as a LAST RESORT. The justification MUST explain why none of these primitives accomplish your goal, and MUST be no less than 40 characters.",
+        "The user prefers Effect primitives like `Data.TaggedError`, `Schema.TaggedErrorClass`, `Data.Error`, `Schema.ErrorClass`, `Cause.NoSuchElementError`, `Cause.TimeoutError`, `Cause.IllegalArgumentError`, `Cause.ExceededCapacityError`, or `Cause.YieldableError` over vanilla `Error` type references. If this logic cannot be implemented with any of these primitives, use `// eslint-disable-next-line no-error -- <justification>` as a LAST RESORT. The justification MUST explain why none of these primitives accomplish your goal, and MUST be no less than 40 characters. See /Users/bytedance/eslint-plugin-enforce-effect/docs/rules/no-error.md",
     },
   },
   defaultOptions: [],

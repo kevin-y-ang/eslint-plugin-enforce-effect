@@ -2,8 +2,15 @@ import { AST_NODE_TYPES, TSESTree } from "@typescript-eslint/utils";
 
 import { createRule } from "../../utils/create-rule.js";
 
+const BANNED_MODULE_NAMES = new Set([
+  "fs",
+  "fs/promises",
+  "node:fs",
+  "node:fs/promises",
+]);
+
 function isBannedModuleName(value: string): boolean {
-  return value === "child_process" || value === "node:child_process";
+  return BANNED_MODULE_NAMES.has(value);
 }
 
 function getStaticStringValue(
@@ -17,19 +24,19 @@ function getStaticStringValue(
 }
 
 export default createRule({
-  name: "no-node-child-process",
+  name: "no-fs",
   meta: {
     type: "suggestion",
     docs: {
       description:
-        "Disallow `child_process` imports in favor of safer runtime boundaries.",
+        "Disallow `fs` / `node:fs` imports in favor of Effect's `FileSystem` service.",
       recommended: true,
       requiresTypeChecking: false,
     },
     schema: [],
     messages: {
-      noNodeChildProcess:
-        "The user prefers Effect primitives like `ChildProcessSpawner`, `NodeChildProcessSpawner.layer`, `NodeServices.layer`, `ChildProcess.make`, `ChildProcess.pipeTo`, `NodeWorker`, or `Worker.layerSpawner` over vanilla `child_process` / `worker_threads`. If this logic cannot be implemented with any of these primitives, use `// eslint-disable-next-line no-node-child-process -- <justification>` as a LAST RESORT. The justification MUST explain why none of these primitives accomplish your goal, and MUST be no less than 40 characters. See /Users/bytedance/eslint-plugin-enforce-effect/docs/rules/no-node-child-process.md",
+      noFs:
+        "The user prefers Effect primitives like `FileSystem.FileSystem` (with `readFileString`, `writeFileString`, `stream`, `sink`, `open`, `stat`, `readDirectory`, `makeDirectory`, `remove`, `watch`, etc.), `NodeFileSystem.layer`, `NodeServices.layer`, `BunFileSystem.layer`, `Path.Path`, or `NodePath.layer` over vanilla `fs` / `node:fs` / `fs/promises`. If this logic cannot be implemented with any of these primitives, use `// eslint-disable-next-line no-fs -- <justification>` as a LAST RESORT. The justification MUST explain why none of these primitives accomplish your goal, and MUST be no less than 40 characters. See /Users/bytedance/eslint-plugin-enforce-effect/docs/rules/no-fs.md",
     },
   },
   defaultOptions: [],
@@ -50,7 +57,7 @@ export default createRule({
 
       context.report({
         node,
-        messageId: "noNodeChildProcess",
+        messageId: "noFs",
       });
     }
 
