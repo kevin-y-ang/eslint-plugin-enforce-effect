@@ -92,6 +92,16 @@ export default createRule({
           });
         }
 
+        // `Effect.then` / `Effect.catch` are legitimate Effect namespace APIs, not
+        // Promise chain methods, so skip the chain check when the receiver is the
+        // `Effect` identifier.
+        if (
+          object.type === AST_NODE_TYPES.Identifier &&
+          object.name === "Effect"
+        ) {
+          return;
+        }
+
         if (
           !computed &&
           property.type === AST_NODE_TYPES.Identifier &&

@@ -81,7 +81,13 @@ const recommended = configFromRuleNames(
   recommendedRuleNames,
 );
 
-const recommendedTypeCheckedRuleNames = ["no-date-inferred"] as const;
+const recommendedTypeCheckedRuleNames = [
+  "no-date-inferred",
+  "no-error-inferred",
+  "no-null-inferred",
+  "no-promise-inferred",
+  "no-undefined-inferred",
+] as const;
 
 const recommendedTypeChecked = configFromRuleNames(
   "enforce-effect/recommended-type-checked",

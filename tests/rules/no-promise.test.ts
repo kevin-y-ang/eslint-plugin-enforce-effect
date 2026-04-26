@@ -34,6 +34,18 @@ ruleTester.run("no-promise", rule, {
     {
       code: "const program = Effect.gen(function* () { return yield* task; });",
     },
+    {
+      code: "Effect.catch(handler);",
+    },
+    {
+      code: "Effect.catch(self, handler);",
+    },
+    {
+      code: "Effect.then(handler);",
+    },
+    {
+      code: "Effect['catch'](handler);",
+    },
   ],
   invalid: [
     {
