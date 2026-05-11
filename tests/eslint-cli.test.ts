@@ -5,15 +5,16 @@ import { fileURLToPath } from "node:url";
 import { beforeAll, describe, expect, it } from "vitest";
 
 const currentDir = path.dirname(fileURLToPath(import.meta.url));
-const repoRoot = path.resolve(currentDir, "../..");
+const repoRoot = path.resolve(currentDir, "..");
 const nodeExecutable = process.execPath;
 const tscCli = path.join(repoRoot, "node_modules/typescript/bin/tsc");
 const eslintCli = path.join(repoRoot, "node_modules/eslint/bin/eslint.js");
-const fixtureConfig = path.join(repoRoot, "fixtures/eslint.config.mjs");
-const validFixturesDir = path.join(repoRoot, "fixtures/valid");
-const invalidFixturesDir = path.join(repoRoot, "fixtures/invalid");
+const fixtureConfig = path.join(repoRoot, "tests/fixtures/eslint.config.mjs");
+const validFixturesDir = path.join(repoRoot, "tests/fixtures/valid");
+const invalidFixturesDir = path.join(repoRoot, "tests/fixtures/invalid");
 
-const recommendedRuleNames = [
+const enabledRuleNames = [
+  "no-and",
   "no-console",
   "no-crypto",
   "no-error",
@@ -26,9 +27,11 @@ const recommendedRuleNames = [
   "no-nullish-coalescing",
   "no-node-child-process",
   "no-optional-chaining",
+  "no-or",
   "no-performance-now",
   "no-promise",
   "no-process-env",
+  "no-short-function",
   "no-switch",
   "no-throw",
   "no-timers",
@@ -68,14 +71,14 @@ describe("eslint cli fixtures", () => {
   });
 
   it(
-    "reports the expected violations for the recommended invalid fixtures",
+    "reports the expected violations for the invalid fixtures",
     { timeout: 20000 },
     () => {
       const result = runEslint(invalidFixturesDir);
 
       expect(result.status).toBe(1);
 
-      for (const ruleName of recommendedRuleNames) {
+      for (const ruleName of enabledRuleNames) {
         expect(result.output, `expected enforce-effect/${ruleName}`).toContain(
           `enforce-effect/${ruleName}`,
         );

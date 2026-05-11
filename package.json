@@ -25,7 +25,7 @@
     "dev": "tsc -p tsconfig.build.json --watch",
     "lint": "eslint .",
     "test": "vitest run",
-    "test:fixtures": "vitest run tests/fixtures/eslint-cli.test.ts",
+    "test:fixtures": "vitest run tests/eslint-cli.test.ts",
     "typecheck": "tsc -p tsconfig.json",
     "check": "eslint . && tsc -p tsconfig.json && vitest run",
     "prepack": "tsc -p tsconfig.build.json"

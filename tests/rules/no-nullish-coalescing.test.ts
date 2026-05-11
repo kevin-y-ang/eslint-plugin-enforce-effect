@@ -28,6 +28,12 @@ ruleTester.run("no-nullish-coalescing", rule, {
     {
       code: "const value = Option.getOrElse(option, () => fallback);",
     },
+    {
+      code: "const cached = Effect.cached(computeIt);",
+    },
+    {
+      code: "let counter = 0; counter += 1;",
+    },
   ],
   invalid: [
     {
@@ -37,6 +43,14 @@ ruleTester.run("no-nullish-coalescing", rule, {
     {
       code: "const value = foo() ?? bar();",
       errors: [{ messageId: "noNullishCoalescing" }],
+    },
+    {
+      code: "let cache; cache ??= computeIt();",
+      errors: [{ messageId: "noNullishCoalescingAssign" }],
+    },
+    {
+      code: "config.title ??= \"Untitled\";",
+      errors: [{ messageId: "noNullishCoalescingAssign" }],
     },
   ],
 });

@@ -1,7 +1,7 @@
 import { defineConfig } from "eslint/config";
 import tsParser from "@typescript-eslint/parser";
 
-import enforceEffect from "../dist/index.js";
+import enforceEffect from "../../dist/index.js";
 
 export default defineConfig([
   {
@@ -20,4 +20,12 @@ export default defineConfig([
     },
   },
   ...enforceEffect.configs.recommended,
+  {
+    rules: {
+      "enforce-effect/no-short-function": [
+        "error",
+        { minBodyLines: 3, allowBracelessArrowFunctions: false },
+      ],
+    },
+  },
 ]);

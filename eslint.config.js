@@ -11,7 +11,7 @@ export default defineConfig(
   tseslint.configs.recommended,
   eslintPlugin.configs.recommended,
   {
-    ignores: ["dist", "coverage", "node_modules", "fixtures"],
+    ignores: ["dist", "coverage", "node_modules", "tests/fixtures"],
   },
   {
     files: ["**/*.ts"],

@@ -1,3 +1,4 @@
+import noAnd from "./no-and.js";
 import noConsole from "./no-console.js";
 import noCrypto from "./no-crypto.js";
 import noDate from "./no-date.js";
@@ -16,10 +17,12 @@ import noNull from "./no-null.js";
 import noNullTypeChecked from "./no-null-type-checked.js";
 import noNullishCoalescing from "./no-nullish-coalescing.js";
 import noOptionalChaining from "./no-optional-chaining.js";
+import noOr from "./no-or.js";
 import noPerformanceNow from "./no-performance-now.js";
 import noProcessEnv from "./no-process-env.js";
 import noPromise from "./no-promise.js";
 import noPromiseTypeChecked from "./no-promise-type-checked.js";
+import noShortFunction from "./no-short-function.js";
 import noSwitch from "./no-switch.js";
 import noThrow from "./no-throw.js";
 import noTimers from "./no-timers.js";
@@ -30,6 +33,7 @@ import noUndefinedTypeChecked from "./no-undefined-type-checked.js";
 import requireEslintDisableJustification from "./require-eslint-disable-justification.js";
 
 const rules = {
+  "no-and": noAnd,
   "no-console": noConsole,
   "no-crypto": noCrypto,
   "no-date": noDate,
@@ -48,10 +52,12 @@ const rules = {
   "no-null-type-checked": noNullTypeChecked,
   "no-nullish-coalescing": noNullishCoalescing,
   "no-optional-chaining": noOptionalChaining,
+  "no-or": noOr,
   "no-performance-now": noPerformanceNow,
   "no-process-env": noProcessEnv,
   "no-promise": noPromise,
   "no-promise-type-checked": noPromiseTypeChecked,
+  "no-short-function": noShortFunction,
   "no-switch": noSwitch,
   "no-throw": noThrow,
   "no-timers": noTimers,

@@ -14,6 +14,7 @@ const namespace = "enforce-effect";
 function configFromRuleNames(
   configName: string,
   ruleNames: readonly string[],
+  ruleOptions: Partial<Record<string, readonly unknown[]>> = {},
 ) {
   return [
     {
@@ -22,7 +23,14 @@ function configFromRuleNames(
         [namespace]: plugin,
       },
       rules: Object.fromEntries(
-        ruleNames.map((ruleName) => [`${namespace}/${ruleName}`, "error"]),
+        ruleNames.map((ruleName) => {
+          const options = ruleOptions[ruleName];
+
+          return [
+            `${namespace}/${ruleName}`,
+            options === undefined ? "error" : ["error", ...options],
+          ];
+        }),
       ),
     },
   ];
@@ -52,6 +60,7 @@ const TYPE_CHECKED_SUPERSEDES = {
 } as const;
 
 const recommendedRuleNames = [
+  "no-and",
   "no-console",
   "no-crypto",
   "no-date",
@@ -67,6 +76,7 @@ const recommendedRuleNames = [
   "no-nullish-coalescing",
   "no-node-child-process",
   "no-optional-chaining",
+  "no-or",
   "no-performance-now",
   "no-promise",
   "no-process-env",
@@ -79,21 +89,29 @@ const recommendedRuleNames = [
   "require-eslint-disable-justification",
 ] as const;
 
+const recommendedRuleOptions = {
+  "require-eslint-disable-justification": [{ minLength: 40 }],
+} as const;
+
 const recommended = configFromRuleNames(
   "enforce-effect/recommended",
   recommendedRuleNames,
+  recommendedRuleOptions,
 );
 
 const recommendedTypeCheckedRuleNames = recommendedRuleNames.map(
   (ruleName): string =>
     ruleName in TYPE_CHECKED_SUPERSEDES
-      ? TYPE_CHECKED_SUPERSEDES[ruleName as keyof typeof TYPE_CHECKED_SUPERSEDES]
+      ? TYPE_CHECKED_SUPERSEDES[
+          ruleName as keyof typeof TYPE_CHECKED_SUPERSEDES
+        ]
       : ruleName,
 );
 
 const recommendedTypeChecked = configFromRuleNames(
   "enforce-effect/recommended-type-checked",
   recommendedTypeCheckedRuleNames,
+  recommendedRuleOptions,
 );
 
 plugin.configs = {

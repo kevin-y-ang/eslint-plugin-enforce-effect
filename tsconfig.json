@@ -14,5 +14,6 @@
     "forceConsistentCasingInFileNames": true,
     "types": ["node"]
   },
-  "include": ["src/**/*.ts", "tests/**/*.ts", "eslint.config.js"]
+  "include": ["src/**/*.ts", "tests/**/*.ts", "eslint.config.js"],
+  "exclude": ["tests/fixtures/**"]
 }

@@ -145,6 +145,8 @@ All rule docs live in [`docs/rules`](./docs/rules). Each rule is enabled in
 | [`no-undefined-type-checked`](./docs/rules/no-undefined-type-checked.md)   |             |      ✓       |
 | [`no-nullish-coalescing`](./docs/rules/no-nullish-coalescing.md)           |     ✓       |      ✓       |
 | [`no-optional-chaining`](./docs/rules/no-optional-chaining.md)             |     ✓       |      ✓       |
+| [`no-and`](./docs/rules/no-and.md)                                         |     ✓       |      ✓       |
+| [`no-or`](./docs/rules/no-or.md)                                           |     ✓       |      ✓       |
 | [`no-type-assertion`](./docs/rules/no-type-assertion.md)                   |     ✓       |      ✓       |
 | [`no-explicit-function-return-type`](./docs/rules/no-explicit-function-return-type.md) | ✓ | ✓     |
 
@@ -172,6 +174,12 @@ All rule docs live in [`docs/rules`](./docs/rules). Each rule is enabled in
 | [`no-process-env`](./docs/rules/no-process-env.md)                    |     ✓       |      ✓       |
 | [`no-timers`](./docs/rules/no-timers.md)                              |     ✓       |      ✓       |
 | [`no-fetch`](./docs/rules/no-fetch.md)                                |     ✓       |      ✓       |
+
+### Code style
+
+| Rule                                                                                       | Recommended | Type-checked |
+| ------------------------------------------------------------------------------------------ | :---------: | :----------: |
+| [`no-short-function`](./docs/rules/no-short-function.md)                                   |             |              |
 
 ### Meta
 
@@ -205,19 +213,19 @@ const result = Effect.runPromise(program);
 [`require-eslint-disable-justification`](./docs/rules/require-eslint-disable-justification.md)
 will fail the lint if you forget the `-- reason` description.
 
-### Post-edit lint hooks (`.claude/`)
+### Post-edit lint hook (`.claude/`)
 
 `.claude/hooks.json` registers a `PostToolUse` hook that runs
 `eslint --no-warn-ignored` against any JS/TS file Claude Code writes or edits
 and feeds the violations back to the agent as additional context. The agent
-then fixes the violation in the same loop.
+fixes the violation in the same loop, before it moves on to the next edit.
 
-Catching a vanilla-API regression inline — one Write/Edit at a time — is
-meaningfully better than catching it at the end of a multi-file task. The
-agent learns the Effect idiom for the rule it just tripped, and that style
-choice propagates through subsequent edits. Late-stage cleanup, by contrast,
-often means rewriting whole control-flow trees the agent already built
-around `try` / `async` / `throw` / `null` / etc.
+This matters for writing Effect code agentically: it's much cheaper to fix
+the code style early than late. Catching a `throw` / `async` / `null` /
+`Promise` regression on the Write that introduced it lets the agent learn
+the Effect idiom and apply it to subsequent edits in the same task. Late
+cleanup usually means rewriting whole control-flow trees the agent already
+built around the wrong primitive.
 
 The hook script is configurable via `LINT_RUNTIME` and `LINT_CMD`, so it
 works with `npx`, `pnpm exec`, `bunx`, oxlint, biome, etc. Drop the same
@@ -225,14 +233,14 @@ works with `npx`, `pnpm exec`, `bunx`, oxlint, biome, etc. Drop the same
 
 ### `skills/`
 
-The repo ships two skills that teach an agent how
-to look up Effect APIs from the Effect source itself, rather than guessing or
-round-tripping to the Effect website:
+The repo ships two Claude Code (and Cursor) skills that let an agent
+discover real Effect APIs from the Effect source itself, instead of
+hallucinating signatures or round-tripping to the Effect website:
 
 - [`skills/ask-effect-init`](./skills/ask-effect-init/SKILL.md) — shallow-clones the Effect source as `.reference/effect/` so subsequent skills have something to grep.
 - [`skills/ask-effect`](./skills/ask-effect/SKILL.md) — answers "how do I use X?" Effect questions by searching that reference.
 
-Together with the lint feedback loop above, these give an agent enough
+Combined with the lint feedback loop above, these give the agent enough
 in-context grounding to write idiomatic Effect on the first pass.
 
 ## Development
